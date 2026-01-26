@@ -1,13 +1,13 @@
 import { fetchNoteById } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
 import { notFound } from 'next/navigation';
-import css from './NotePreview.module.css';
+import NotePreviewClient from './NotePreview.client';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-const NotePreview = async ({ params }: Props) => {
+export default async function NotePreviewPage({ params }: Props) {
   const { id } = await params;
   let note;
 
@@ -20,20 +20,7 @@ const NotePreview = async ({ params }: Props) => {
 
   return (
     <Modal>
-      <div className={css.container}>
-        <article className={css.item}>
-          <header className={css.header}>
-            <h2>{note.title}</h2>
-            {note.tag && <span className={css.tag}>{note.tag}</span>}
-          </header>
-          
-          <div className={css.content}>
-            {note.content}
-          </div>
-        </article>
-      </div>
+      <NotePreviewClient note={note} />
     </Modal>
   );
-};
-
-export default NotePreview;
+}
