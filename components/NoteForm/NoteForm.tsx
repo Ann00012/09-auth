@@ -12,9 +12,12 @@ export type NoteFormValues ={
   tag: string;
 }
 
+interface NoteFormProps {
+  onCancel?: () => void; 
 
+}
 
-export default function NoteForm() {
+export default function NoteForm({ onCancel }: NoteFormProps) {
   const fieldId = useId();
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { 
