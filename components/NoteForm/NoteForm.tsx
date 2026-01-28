@@ -4,7 +4,7 @@ import css from "./NoteForm.module.css";
 import { createNote } from "@/lib/api";
 import { useRouter } from 'next/navigation';
 import { useMutation } from "@tanstack/react-query";
-import { useNoteDraftStore } from "@/lib/stores/Store";
+import { useNoteDraftStore } from "@/lib/stores/noteStore";
 
 export type NoteFormValues ={
   title: string;
