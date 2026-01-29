@@ -1,9 +1,10 @@
 "use client";
 import { useId } from "react";
+import { toast } from "react-hot-toast";
 import css from "./NoteForm.module.css";
 import { createNote } from "@/lib/api";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNoteDraftStore } from "@/lib/store/noteStore";
 
 export type NoteFormValues = {
@@ -18,6 +19,8 @@ interface NoteFormProps {
 
 export default function NoteForm({ onCancel }: NoteFormProps) {
   const fieldId = useId();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
   const handleChange = (
     event: React.ChangeEvent<
@@ -29,19 +32,26 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
       [event.target.name]: event.target.value,
     });
   };
-  const { mutate } = useMutation({
+
+  const { mutate, isPending } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
+      toast.success("Note created successfully");
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       clearDraft();
       router.push("/notes/filter/all");
     },
+    onError: (error) => {
+    toast.error(`Error: ${error.message}`);
+  },
   });
-  const router = useRouter();
+
   const handleCancel = () => router.push("/notes/filter/all");
   const handleSubmit = (formData: FormData) => {
     const values = Object.fromEntries(formData) as NoteFormValues;
     mutate(values);
   };
+
   return (
     <form action={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
@@ -90,11 +100,12 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
           type="button"
           className={css.cancelButton}
           onClick={handleCancel}
+          disabled={isPending}
         >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton}>
-          Create note
+        <button type="submit" className={css.submitButton} disabled={isPending}>
+          {isPending ? "Creating..." : "Create note"}
         </button>
       </div>
     </form>

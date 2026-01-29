@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { Toaster } from "react-hot-toast";
@@ -9,8 +10,6 @@ import { fetchNotes } from "@/lib/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import { NoteList } from "@/components/NoteList/NoteList";
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
 import Loader from "@/app/loading";
 import ErrorMessage from "@/app/notes/error";
 
@@ -24,7 +23,6 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
   const perPage = 12;
   const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState("");
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [debouncedQuery] = useDebounce(query, 500);
 
   const { data, isLoading, isError, isSuccess, error } = useQuery({
@@ -44,23 +42,19 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
 
   const handleSearch = (newQuery: string) => {
     setQuery(newQuery);
-    setPage(1); 
+    setPage(1);
   };
 
   return (
     <div className={css.app}>
       <Toaster position="top-right" reverseOrder={false} />
-      
+
       <header className={css.toolbar}>
         <SearchBox value={query} onChange={handleSearch} />
-        
-        <button 
-          className={css.button} 
-          onClick={() => setIsCreateModalOpen(true)}
-          type="button"
-        >
+
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
 
         {totalPages > 1 && (
           <Pagination
@@ -77,7 +71,7 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
             <Loader />
           </div>
         )}
-        
+
         {isError && <ErrorMessage error={error as Error} />}
 
         {isSuccess && notes.length > 0 && <NoteList notes={notes} />}
@@ -86,12 +80,6 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
           <p className={css.info}>No notes found...</p>
         )}
       </main>
-
-      {isCreateModalOpen && (
-        <Modal onClose={() => setIsCreateModalOpen(false)}>
-          <NoteForm onCancel={() => setIsCreateModalOpen(false)} />
-        </Modal>
-      )}
     </div>
   );
 }
