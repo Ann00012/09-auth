@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/TanStackProvider/TanStackProvider.tsx"  ],
+, "components/TanStackProvider/TanStackProvider.tsx", "app/api/_utils"  ],
   "exclude": ["node_modules"]
 }

@@ -6,12 +6,12 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { Toaster } from "react-hot-toast";
 
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/clientApi";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import { NoteList } from "@/components/NoteList/NoteList";
 import Loader from "@/app/loading";
-import ErrorMessage from "@/app/notes/error";
+import ErrorMessage from "@/app/(private routes)/notes/error";
 
 import css from "./Notes.client.module.css";
 
