@@ -1,6 +1,6 @@
 import { type User } from '@/types/user';
 import { type Note } from "@/types/note";
-import nextServer from '../api';
+import nextServer from './api';
 
 interface ResponseNoteProps { 
     notes: Note[];

@@ -1,7 +1,7 @@
 import { type User } from '@/types/user';
 import { cookies } from 'next/headers';
 import { type Note } from "@/types/note";
-import nextServer from '../api';
+import nextServer from './api';
 
 interface ResponseNoteProps { 
     notes: Note[];
