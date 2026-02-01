@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api/clientApi";
 import Loader from "./loading";
@@ -23,39 +23,52 @@ export default function NotePreviewClient({ id }: NotePreviewClientProps) {
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
     staleTime: 1000 * 60 * 5,
-    refetchOnMount:false
+    refetchOnMount: false,
   });
 
   const handleClose = () => router.back();
 
   if (isLoading) {
     return (
-     <Modal onClose={handleClose}>
+      <Modal onClose={handleClose}>
         <Loader />
       </Modal>
     );
   }
 
   if (isError) {
-   <Modal onClose={handleClose}>
+    return (
+      <Modal onClose={handleClose}>
         <ErrorMessage error={error as Error} />
       </Modal>
+    );
   }
 
-  if (!note) return null;
+  if (!note) {
+    return (
+      <Modal onClose={handleClose}>
+        <div className={css.notFoundWrapper}>
+          <h3>Note Not Found</h3>
+          <p >
+            The note you are looking for might have been deleted or moved.
+          </p>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal onClose={handleClose}>
-    <div className={css.container}>
-      <article className={css.item}>
-        <header className={css.header}>
-          <h2 className={css.title}>{note.title}</h2>
-          {note.tag && <span className={css.tag}>{note.tag}</span>}
-        </header>
+      <div className={css.container}>
+        <article className={css.item}>
+          <header className={css.header}>
+            <h2 className={css.title}>{note.title}</h2>
+            {note.tag && <span className={css.tag}>{note.tag}</span>}
+          </header>
 
-        <div className={css.content}>{note.content}</div>
-      </article>
+          <div className={css.content}>{note.content}</div>
+        </article>
       </div>
-      </Modal>
+    </Modal>
   );
 }

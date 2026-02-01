@@ -21,34 +21,21 @@ export interface FetchNotesOptions {
   tag?: string;
 }
 
-const ACCESS_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+// const ACCESS_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 
 export const createNote = async (data:PostNoteProps): Promise<Note> => { 
-    const response = await nextServer.post<Note>('/notes', data, {
-        headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`
-        }
-    },
-    );
+    const response = await nextServer.post<Note>('/notes', data);
     return response.data;
 }
 
 export const deleteNote = async (id: string): Promise<Note> => { 
-  const response = await nextServer.delete<Note>(`/notes/${id}`, {
-        headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`
-        }
-    });
+  const response = await nextServer.delete<Note>(`/notes/${id}`);
     return response.data;
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-    const response = await nextServer.get<Note>(`/notes/${id}`, {
-        headers: {
-             Authorization: `Bearer ${ACCESS_TOKEN}`
-        }
-    });
+    const response = await nextServer.get<Note>(`/notes/${id}`);
      return response.data;
 }
 
@@ -58,17 +45,23 @@ export const fetchNotes = async ({
   perPage = 12,
   tag
 }: FetchNotesOptions = {}) => {
-  const response = await nextServer.get<ResponseNoteProps>('/notes', {
-    params: { search, page, perPage, tag },
-    headers: {  Authorization: `Bearer ${ACCESS_TOKEN}` }
-  });
+  const response = await nextServer.get<ResponseNoteProps>('/notes',
+    {
+      params: {
+        search,
+        page,
+        perPage,
+        tag
+      }
+    },
+  );
   return response.data;
 };
 
 export type RegisterRequest = {
   email: string;
   password: string;
-  userName: string;
+  username: string;
 };
 
 

@@ -8,7 +8,7 @@ interface ResponseNoteProps {
     totalPages: number,
 }
 
-export const fetchServerNotes = async (params = {}) => {
+export const fetchNotes = async (params = {}) => {
   const cookieStore = await cookies();
   const { data } = await nextServer.get<ResponseNoteProps>('/notes', {
     params, 
@@ -19,7 +19,7 @@ export const fetchServerNotes = async (params = {}) => {
   return data;
 };
 
-export const fetchServerNoteById = async (id: string): Promise<Note> => {
+export const fetchNoteById = async (id: string): Promise<Note> => {
   const cookieStore = await cookies();
   const { data } = await nextServer.get<Note>(`/notes/${id}`, {
     headers: {
@@ -36,7 +36,7 @@ export const checkServerSession = async () => {
       Cookie: cookieStore.toString(),
     },
   });
-    return res.data.success;
+    return res;
 };
 
 
