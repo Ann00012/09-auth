@@ -35,7 +35,8 @@ In this project, I implemented the following core logic and architectural patter
 
 ## 🛠 Features
 
-- **Full CRUD Support:** Create, read, and delete notes with immediate UI feedback.
+- **CRUD Support:** Create, read, and delete notes with immediate UI feedback.
+- **Profile Editing:** Securely update user profile details, including username integration.
 - **Dynamic Routing:** Individual pages for each note using `app/notes/[id]` structure.
 - **Secure Sessions:** Http-only cookie management for safe authentication.
 
