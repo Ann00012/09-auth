@@ -40,3 +40,19 @@
   margin-top: 50px;
 }
   
+  
+@media (max-width: 480px) {
+  .toolbar {
+    flex-direction: column; 
+    gap:24px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 12px 0;
+    flex-wrap: wrap; 
+    gap: 10px;
+  }
+}
